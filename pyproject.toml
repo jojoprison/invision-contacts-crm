@@ -8,26 +8,26 @@ authors = [
 ]
 requires-python = ">=3.11,<4.0"
 
-dependencies = [
-    "Django>=5.2.3",
-    "django-ninja>=1.4.3",
-    "psycopg2-binary>=2.9.10",
-    "django-pgschemas>=1.0.2",
-]
+[tool.poetry.dependencies]
+Django = ">=5.2.3"
+django-ninja = ">=1.4.3"
+psycopg2-binary = ">=2.9.10"
+django-pgschemas = ">=1.0.2"
 
-[project.optional-dependencies]
-dev = [
-    "pytest>=8.3.2",
-    "pytest-django>=4.7.2",
-    "pytest-cov>=6.2.1",
-    "flake8>=7.3.0",
-    # TODO after implementation move to main deps
-    "bandit>=1.8.4",
-    # TODO after implementation move to main deps
-    "celery>=5.3.0",
-    # TODO after implementation move to main deps
-    "redis>=6.2.0",
-]
+[tool.poetry.group.dev]
+optional = true
+
+[tool.poetry.group.dev.dependencies]
+pytest = ">=8.3.2"
+pytest-django = ">=4.7.2"
+pytest-cov = ">=6.2.1"
+flake8 = ">=7.3.0"
+# TODO after implementation move to main deps
+bandit = ">=1.8.4"
+# TODO after implementation move to main deps
+celery = ">=5.3.0"
+# TODO after implementation move to main deps
+redis = ">=6.2.0"
 
 [tool.poetry]
 package-mode = false
