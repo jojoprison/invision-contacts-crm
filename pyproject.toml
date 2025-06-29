@@ -7,6 +7,10 @@ authors = [
     {name = "jojoprison",email = "egyabig2@gmail.com"}
 ]
 requires-python = ">=3.11,<4.0"
+
+[tool.poetry]
+package-mode = false
+
 dependencies = [
     "Django>=5.2.3",
     "django-ninja>=1.4.3",
@@ -27,7 +31,6 @@ dev = [
     # TODO after implementation move to main deps
     "redis>=6.2.0",
 ]
-
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
