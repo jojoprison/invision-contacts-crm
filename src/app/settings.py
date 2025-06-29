@@ -73,6 +73,18 @@ DATABASES = {
 TENANT_MODEL = 'tenants.Tenant'
 DOMAIN_MODEL = 'tenants.Domain'
 
+TENANT_SCHEMA_PREFIX = os.environ.get('TENANT_SCHEMA_PREFIX', 'contact_')
+
+TENANTS = {
+    'default': {
+        'SCHEMA_NAME': 'public',
+        'DOMAINS': ['localhost'],
+    },
+    'public': {
+        'SCHEMA_NAME': 'public',
+        'DOMAINS': ['localhost'],
+    },
+}
 
 AUTH_PASSWORD_VALIDATORS = [
     {
