@@ -3,7 +3,6 @@ from django_pgschemas.management.commands.migrateschema import Command as OrigMi
 from django.db import connection
 from django.db.migrations.loader import MigrationLoader
 from django.db.migrations.autodetector import MigrationAutodetector
-from django.core.checks import Tags
 
 
 class Command(OrigMigrateSchema, DjangoMigrate):
@@ -16,6 +15,8 @@ class Command(OrigMigrateSchema, DjangoMigrate):
         )
     
     def handle(self, *args, **options):
-        # Переопределяем для отключения проверок
+        # TODO remove after migration to Django >= 5.2 issue:
+        # https://github.com/lorinkoz/django-pgschemas/issues/6
+        # https://code.djangoproject.com/ticket/35656
         options['skip_checks'] = True
         return super().handle(*args, **options)
