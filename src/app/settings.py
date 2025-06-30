@@ -82,7 +82,7 @@ auth_part = DATABASE_URL.split('/')[2].split('@')[0]
 if ':' in auth_part:
     user, password = auth_part.split(':')
 else:
-    user, password = auth_part, ''
+    user, password = 'postgres', 'postgres'
 
 DATABASES = {
     'default': {
