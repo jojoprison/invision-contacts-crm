@@ -6,7 +6,8 @@ from datetime import datetime
 
 from contacts.models import Contact
 
-api = NinjaAPI(title="Contacts API")
+# Используем пустой путь, так как в urls.py уже указан '/api/'
+api = NinjaAPI(title="Contacts API", urls_namespace='api')
 
 
 class ContactIn(Schema):
@@ -23,7 +24,7 @@ class ContactOut(Schema):
     date_created: datetime
 
 
-@api.post("/contacts", response={201: ContactOut})
+@api.post("/", response={201: ContactOut})
 def create_contact(request, payload: ContactIn):
     contact = Contact.objects.create(
         name=payload.name,
@@ -33,7 +34,7 @@ def create_contact(request, payload: ContactIn):
     return 201, contact
 
 
-@api.get("/contacts", response=List[ContactOut])
+@api.get("/", response=List[ContactOut])
 @paginate
 def list_contacts(request, email: Optional[str] = None):
     queryset = Contact.objects.all()
@@ -42,13 +43,13 @@ def list_contacts(request, email: Optional[str] = None):
     return queryset
 
 
-@api.get("/contacts/{contact_id}", response=ContactOut)
+@api.get("/{contact_id}", response=ContactOut)
 def get_contact(request, contact_id: UUID):
     contact = Contact.objects.get(id=contact_id)
     return contact
 
 
-@api.put("/contacts/{contact_id}", response=ContactOut)
+@api.put("/{contact_id}", response=ContactOut)
 def update_contact(request, contact_id: UUID, payload: ContactIn):
     contact = Contact.objects.get(id=contact_id)
     contact.name = payload.name
@@ -58,7 +59,7 @@ def update_contact(request, contact_id: UUID, payload: ContactIn):
     return contact
 
 
-@api.delete("/contacts/{contact_id}", response={204: None})
+@api.delete("/{contact_id}", response={204: None})
 def delete_contact(request, contact_id: UUID):
     contact = Contact.objects.get(id=contact_id)
     contact.delete()
