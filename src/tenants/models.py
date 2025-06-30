@@ -11,7 +11,7 @@ class Tenant(models.Model):
 
     class Meta:
         # explicitly 'public'
-        db_table = '"public".tenants'
+        db_table = 'public.tenants'
 
     def __str__(self):
         return f'{self.name} ({self.schema_name})'
@@ -27,7 +27,7 @@ class Domain(models.Model):
 
     class Meta:
         # explicitly 'public'
-        db_table = '"public".domains'
+        db_table = 'public.domains'
 
     def __str__(self):
         return self.domain
