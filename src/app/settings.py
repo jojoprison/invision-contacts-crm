@@ -102,28 +102,32 @@ DOMAIN_MODEL = 'tenants.Domain'
 TENANT_SCHEMA_PREFIX = os.environ.get('TENANT_SCHEMA_PREFIX', 'contact_')
 
 TENANTS = {
-    # Public (shared) schema — включаем tenants и инфраструктурные Django-приложения
-    "public": {
-        "APPS": [
-            "django.contrib.contenttypes",
-            "django.contrib.staticfiles",
-            "django_pgschemas",
-            "tenants",  # Важно: tenants должно быть в public схеме
+    # Public (shared) схема
+    'public': {
+        'SCHEMA_NAME': 'public',  # явно указываем имя схемы
+        'APPS': [
+            # Инфраструктурные приложения:
+            'django.contrib.admin',
+            'django.contrib.auth',
+            'django.contrib.contenttypes',
+            'django.contrib.sessions',
+            'django.contrib.messages',
+            'django.contrib.staticfiles',
+            'django_pgschemas',
+            # Обязательно включаем tenants в public:
+            'tenants',
         ],
     },
-    # Default — настройки для всех динамических арендаторов
-    "default": {
-        "TENANT_MODEL": "tenants.Tenant",
-        "DOMAIN_MODEL": "tenants.Domain",
-        "APPS": [
-            "django.contrib.auth",
-            "django.contrib.sessions",
-            "django.contrib.messages",
-            "django.contrib.admin",
-            "ninja",
-            "contacts",  # бизнес-приложение
+    # Настройка для всех динамических арендаторов
+    'default': {
+        'TENANT_MODEL': 'tenants.Tenant',
+        'DOMAIN_MODEL': 'tenants.Domain',
+        'APPS': [
+            # Только бизнес-приложения:
+            'ninja',
+            'contacts',
         ],
-        "URLCONF": "app.urls",  # корневой urls.py для арендаторов
+        'URLCONF': 'app.urls',
     },
 }
 
