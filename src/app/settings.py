@@ -3,12 +3,12 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
-env_path = Path(__file__).resolve().parent.parent.parent / '.env'
+env_path = Path(os.path.join(os.path.dirname(os.path.dirname(__file__)), '.env'))
 if env_path.exists():
     load_dotenv(env_path)
 
-# local, docker
-ENV_TYPE = os.environ.get('ENV_TYPE', 'local')
+# docker, local
+ENV_TYPE = os.environ.get('ENV_TYPE', 'docker')
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
