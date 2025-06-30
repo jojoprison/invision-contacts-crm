@@ -37,24 +37,18 @@ class TenantMiddleware:
             schema_name = f"{TENANT_SCHEMA_PREFIX}{schema_name}"
 
         try:
-            # Получаем тенанта
             tenant = Tenant.objects.get(schema_name=schema_name)
-            
-            # Устанавливаем schema_name в атрибуты запроса
+
             request.tenant = tenant
             request.tenant_schema = schema_name
-            
-            # Устанавливаем search_path для текущего соединения
+
             self._set_schema(schema_name)
-            
-            # Логируем для отладки
+
             logger.debug(f"Setting schema for {schema_name}")
-            
-            # Получаем ответ
+
             response = self.get_response(request)
             
-            # После получения ответа снова устанавливаем search_path,
-            # так как Django может сбросить его между запросами
+            # Django может сбросить между запросами
             self._set_schema(schema_name)
             
             return response
