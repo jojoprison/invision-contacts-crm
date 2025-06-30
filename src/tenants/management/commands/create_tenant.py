@@ -1,10 +1,10 @@
+from django.core.management import call_command
 from django.core.management.base import BaseCommand, CommandError
-from django.db import connection
 from django_pgschemas.utils import create_schema
 
 from app.settings import TENANT_SCHEMA_PREFIX
 from tenants.models import Tenant, Domain
-from django.core.management import call_command
+
 
 class Command(BaseCommand):
 
@@ -30,19 +30,17 @@ class Command(BaseCommand):
             if Tenant.objects.filter(schema_name=schema_name).exists():
                 raise CommandError(f'Тенант со схемой {schema_name} уже существует!')
 
-            # Создаем запись тенанта
             tenant = Tenant.objects.create(
                 schema_name=schema_name,
                 name=name,
-                auto_drop_schema=True  # Для совместимости с django-pgschemas
+                auto_drop_schema=True
             )
 
-            # Создаем домен
             domain_name = custom_domain or f"{schema}.example.com"
             domain = Domain.objects.create(
                 domain=domain_name,
                 tenant=tenant,
-                is_primary=True  # Отмечаем как основной домен
+                is_primary=True
             )
 
             self.stdout.write(self.style.SUCCESS(
@@ -50,7 +48,6 @@ class Command(BaseCommand):
             self.stdout.write(self.style.SUCCESS(
                 f'Привязан домен: {domain_name}'))
 
-            # Создаем схему и применяем миграции при необходимости
             try:
                 self.stdout.write(f'Создаем схему {schema_name}...')
                 create_schema(schema_name, check_if_exists=True, sync_schema=sync_schema)
@@ -71,7 +68,6 @@ class Command(BaseCommand):
                 self.stdout.write(self.style.SUCCESS(f"Таблицы в схеме {schema_name} созданы успешно"))
 
             except Exception as e:
-                # Если произошла ошибка при создании схемы, удаляем запись тенанта
                 tenant.delete()
                 raise CommandError(f'Ошибка при создании схемы: {str(e)}')
                 
