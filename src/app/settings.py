@@ -61,7 +61,7 @@ DATABASE_URL = os.environ.get('DATABASE_URL')
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': 'django_pgschemas.postgresql_backend',
         'NAME': DATABASE_URL.split('/')[-1],
         'USER': DATABASE_URL.split('/')[2].split(':')[0],
         'PASSWORD': DATABASE_URL.split(':')[2].split('@')[0],
