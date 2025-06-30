@@ -1,6 +1,7 @@
-from django.http import HttpResponseBadRequest, HttpResponseNotFound
-from django.db import connection
 import logging
+
+from django.db import connection
+from django.http import HttpResponseBadRequest, HttpResponseNotFound
 
 from app.settings import TENANT_SCHEMA_PREFIX
 from tenants.models import Tenant
@@ -13,6 +14,20 @@ class TenantMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
+        # Список путей, для которых не требуется X-SCHEMA
+        public_paths = [
+            '/admin/',
+            '/api/contacts/docs',
+            '/static/',
+        ]
+
+        path = request.path_info
+        is_public_path = any(path.startswith(public_path) for public_path in public_paths)
+        
+        if is_public_path:
+            self._set_schema('public')
+            return self.get_response(request)
+        
         schema_name = request.headers.get('X-SCHEMA')
 
         if not schema_name:
