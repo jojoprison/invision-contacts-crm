@@ -27,10 +27,7 @@ services:
 
   web:
     build: .
-    command: >-
-      bash -c "cd src && 
-              python manage.py migrate && 
-              python manage.py runserver 0.0.0.0:8000"
+    command: python src/manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/app
     ports:
@@ -42,11 +39,13 @@ services:
         condition: service_healthy
     environment:
       - DEBUG=1
+      - ENV_TYPE=docker
       - DATABASE_URL=postgres://postgres:postgres@db:5432/contacts_crm
       - REDIS_URL=redis://redis:6379/0
 
   celery:
     build: .
+    entrypoint: docker-entrypoint.sh
     command: bash -c "cd src && python -m celery -A app worker -l INFO"
     volumes:
       - .:/app
@@ -55,6 +54,7 @@ services:
       - redis
     environment:
       - DEBUG=1
+      - ENV_TYPE=docker
       - DATABASE_URL=postgres://postgres:postgres@db:5432/contacts_crm
       - REDIS_URL=redis://redis:6379/0
 
