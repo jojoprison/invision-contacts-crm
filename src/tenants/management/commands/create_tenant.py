@@ -4,7 +4,7 @@ from django_pgschemas.utils import create_schema
 
 from app.settings import TENANT_SCHEMA_PREFIX
 from tenants.models import Tenant, Domain
-
+from django.core.management import call_command
 
 class Command(BaseCommand):
 
@@ -63,6 +63,13 @@ class Command(BaseCommand):
                         f'Схема {schema_name} создана без применения миграций\n'
                         f'Для применения миграций выполните команду:\n'
                         f'python manage.py migrate_tenant_schema {schema_name}'))
+
+                # TODO в общем автоматические миграции от 'create_schema' (sync_schema) не работают
+                # TODO надеюсь скоро пофиксят. пришлось вот это городить - потом надо убрать
+                self.stdout.write(f"Применяем migrate_tenant_schema для создания таблиц...")
+                call_command('migrate_tenant_schema', schema_name)
+                self.stdout.write(self.style.SUCCESS(f"Таблицы в схеме {schema_name} созданы успешно"))
+
             except Exception as e:
                 # Если произошла ошибка при создании схемы, удаляем запись тенанта
                 tenant.delete()
