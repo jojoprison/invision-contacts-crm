@@ -102,30 +102,24 @@ DOMAIN_MODEL = 'tenants.Domain'
 TENANT_SCHEMA_PREFIX = os.environ.get('TENANT_SCHEMA_PREFIX', 'contact_')
 
 TENANTS = {
-    # Public (shared) схема
+    # (shared)
     'public': {
-        'SCHEMA_NAME': 'public',  # явно указываем имя схемы
+        'SCHEMA_NAME': 'public',
         'APPS': [
-            # Общесистемные компоненты
-            'django.contrib.admin',  # админка
-            'django.contrib.auth',  # базовая авторизация
-            'django.contrib.contenttypes',  # модели контент-типов
-            'django.contrib.sessions',  # сессии
+            'django.contrib.admin',
+            'django.contrib.auth',
+            'django.contrib.contenttypes',
+            'django.contrib.sessions',
             'django.contrib.messages',
-            'django.contrib.staticfiles',  # статика
-            'django_pgschemas',  # менеджер схем
-            'tenants',  # модели тенантов
+            'django.contrib.staticfiles',
+            'django_pgschemas',
+            'tenants',
         ],
     },
-    # Настройка для всех динамических арендаторов
     'default': {
         'TENANT_MODEL': 'tenants.Tenant',
         'DOMAIN_MODEL': 'tenants.Domain',
         'APPS': [
-            # 'django.contrib.admin',
-            # "django.contrib.auth",
-            # "django.contrib.sessions",
-            # 'django.contrib.sites',
             'ninja',
             'contacts',
         ],
