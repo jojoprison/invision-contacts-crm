@@ -100,14 +100,30 @@ DATABASE_ROUTERS = ['django_pgschemas.routers.TenantAppsRouter']
 TENANT_MODEL = 'tenants.Tenant'
 DOMAIN_MODEL = 'tenants.Domain'
 TENANT_SCHEMA_PREFIX = os.environ.get('TENANT_SCHEMA_PREFIX', 'contact_')
+
 TENANTS = {
-    'default': {
-        'SCHEMA_NAME': 'public',
-        'TENANT_MODEL': 'tenants.Tenant',
-        'URLCONF': 'app.urls',
+    # Public (shared) schema — включаем tenants и инфраструктурные Django-приложения
+    "public": {
+        "APPS": [
+            "django.contrib.contenttypes",
+            "django.contrib.staticfiles",
+            "django_pgschemas",
+            "tenants",  # Важно: tenants должно быть в public схеме
+        ],
     },
-    'public': {
-        'SCHEMA_NAME': 'public',
+    # Default — настройки для всех динамических арендаторов
+    "default": {
+        "TENANT_MODEL": "tenants.Tenant",
+        "DOMAIN_MODEL": "tenants.Domain",
+        "APPS": [
+            "django.contrib.auth",
+            "django.contrib.sessions",
+            "django.contrib.messages",
+            "django.contrib.admin",
+            "ninja",
+            "contacts",  # бизнес-приложение
+        ],
+        "URLCONF": "app.urls",  # корневой urls.py для арендаторов
     },
 }
 
