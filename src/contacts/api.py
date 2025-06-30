@@ -1,12 +1,13 @@
-from ninja import NinjaAPI, Schema, Path, Query
-from ninja.pagination import paginate
+from datetime import datetime
 from typing import List, Optional
 from uuid import UUID
-from datetime import datetime
+
+from django.http import Http404
+from ninja import NinjaAPI, Schema
+from ninja.pagination import paginate
 
 from contacts.models import Contact
 
-# Используем пустой путь, так как в urls.py уже указан '/api/'
 api = NinjaAPI(title="Contacts API", urls_namespace='api')
 
 
@@ -45,22 +46,31 @@ def list_contacts(request, email: Optional[str] = None):
 
 @api.get("/{contact_id}", response=ContactOut)
 def get_contact(request, contact_id: UUID):
-    contact = Contact.objects.get(id=contact_id)
-    return contact
+    try:
+        contact = Contact.objects.get(id=contact_id)
+        return contact
+    except Contact.DoesNotExist:
+        raise Http404(f"Contact with id {contact_id} does not exist")
 
 
 @api.put("/{contact_id}", response=ContactOut)
 def update_contact(request, contact_id: UUID, payload: ContactIn):
-    contact = Contact.objects.get(id=contact_id)
-    contact.name = payload.name
-    contact.email = payload.email
-    contact.phone = payload.phone
-    contact.save()
-    return contact
+    try:
+        contact = Contact.objects.get(id=contact_id)
+        contact.name = payload.name
+        contact.email = payload.email
+        contact.phone = payload.phone
+        contact.save()
+        return contact
+    except Contact.DoesNotExist:
+        raise Http404(f"Contact with id {contact_id} does not exist")
 
 
 @api.delete("/{contact_id}", response={204: None})
 def delete_contact(request, contact_id: UUID):
-    contact = Contact.objects.get(id=contact_id)
-    contact.delete()
-    return 204, None
+    try:
+        contact = Contact.objects.get(id=contact_id)
+        contact.delete()
+        return 204, None
+    except Contact.DoesNotExist:
+        raise Http404(f"Contact with id {contact_id} does not exist")
