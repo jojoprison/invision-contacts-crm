@@ -106,16 +106,15 @@ TENANTS = {
     'public': {
         'SCHEMA_NAME': 'public',  # явно указываем имя схемы
         'APPS': [
-            # Инфраструктурные приложения:
-            'django.contrib.admin',
-            'django.contrib.auth',
-            'django.contrib.contenttypes',
-            'django.contrib.sessions',
+            # Общесистемные компоненты
+            'django.contrib.admin',  # админка
+            'django.contrib.auth',  # базовая авторизация
+            'django.contrib.contenttypes',  # модели контент-типов
+            'django.contrib.sessions',  # сессии
             'django.contrib.messages',
-            'django.contrib.staticfiles',
-            'django_pgschemas',
-            # Обязательно включаем tenants в public:
-            'tenants',
+            'django.contrib.staticfiles',  # статика
+            'django_pgschemas',  # менеджер схем
+            'tenants',  # модели тенантов
         ],
     },
     # Настройка для всех динамических арендаторов
@@ -123,7 +122,10 @@ TENANTS = {
         'TENANT_MODEL': 'tenants.Tenant',
         'DOMAIN_MODEL': 'tenants.Domain',
         'APPS': [
-            # Только бизнес-приложения:
+            # 'django.contrib.admin',
+            # "django.contrib.auth",
+            # "django.contrib.sessions",
+            # 'django.contrib.sites',
             'ninja',
             'contacts',
         ],
