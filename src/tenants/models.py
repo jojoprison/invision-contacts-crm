@@ -8,6 +8,7 @@ class Tenant(models.Model):
     schema_name = models.CharField(max_length=63, unique=True, help_text='Имя схемы PostgreSQL')
     name = models.CharField(max_length=100, help_text='Название организации')
     created_at = models.DateTimeField(auto_now_add=True)
+    auto_drop_schema = models.BooleanField(default=False)
 
     class Meta:
         # explicitly 'public'
