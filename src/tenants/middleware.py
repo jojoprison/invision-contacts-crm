@@ -47,7 +47,7 @@ class TenantMiddleware:
             logger.debug(f"Setting schema for {schema_name}")
 
             response = self.get_response(request)
-            
+
             # Django может сбросить между запросами
             self._set_schema(schema_name)
             
@@ -60,6 +60,5 @@ class TenantMiddleware:
             return HttpResponseBadRequest(f"Error in tenant routing: {str(e)}")
     
     def _set_schema(self, schema_name):
-        """Установка search_path для PostgreSQL"""
         with connection.cursor() as cursor:
             cursor.execute(f'SET search_path TO "{schema_name}", public')
