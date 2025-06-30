@@ -23,7 +23,9 @@ class Domain(models.Model):
     """
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     domain = models.CharField(max_length=253, unique=True)
-    tenant = models.ForeignKey(Tenant, on_delete=models.CASCADE)
+    tenant = models.ForeignKey(Tenant, on_delete=models.CASCADE, related_name='domains')
+    is_primary = models.BooleanField(default=True)
+    folder = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:
         # explicitly 'public'
