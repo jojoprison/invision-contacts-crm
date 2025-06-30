@@ -7,6 +7,9 @@ env_path = Path(__file__).resolve().parent.parent.parent / '.env'
 if env_path.exists():
     load_dotenv(env_path)
 
+# local, docker
+ENV_TYPE = os.environ.get('ENV_TYPE', 'local')
+
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -59,18 +62,40 @@ TEMPLATES = [
 WSGI_APPLICATION = 'app.wsgi.application'
 
 
-DATABASE_URL = os.environ.get('DATABASE_URL', 'postgres://postgres:postgres@localhost:5432/contacts_crm')
+DATABASE_URL = os.environ.get(
+    'DATABASE_URL',
+    'postgres://postgres:postgres@localhost:5432/contacts_crm'
+)
+db_parts = DATABASE_URL.split('/')
+db_name = db_parts[-1]
+
+host_string = DATABASE_URL.split('@')[-1].split('/')[0]
+if ':' in host_string:
+    host, port = host_string.split(':')
+else:
+    host, port = host_string, '5432'
+
+if ENV_TYPE == 'local':
+    host = 'localhost'
+
+auth_part = DATABASE_URL.split('/')[2].split('@')[0]
+if ':' in auth_part:
+    user, password = auth_part.split(':')
+else:
+    user, password = auth_part, ''
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django_pgschemas.postgresql_backend',
-        'NAME': DATABASE_URL.split('/')[-1],
-        'USER': DATABASE_URL.split('/')[2].split(':')[0],
-        'PASSWORD': DATABASE_URL.split(':')[2].split('@')[0],
-        'HOST': DATABASE_URL.split('@')[1].split(':')[0],
-        'PORT': DATABASE_URL.split(':')[3].split('/')[0],
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': db_name,
+        'USER': user,
+        'PASSWORD': password,
+        'HOST': host,
+        'PORT': port,
     }
 }
+
+DATABASE_ROUTERS = ['django_pgschemas.routing.Router']
 
 TENANT_MODEL = 'tenants.Tenant'
 DOMAIN_MODEL = 'tenants.Domain'
