@@ -74,17 +74,15 @@ DATABASES = {
 
 TENANT_MODEL = 'tenants.Tenant'
 DOMAIN_MODEL = 'tenants.Domain'
-
 TENANT_SCHEMA_PREFIX = os.environ.get('TENANT_SCHEMA_PREFIX', 'contact_')
-
 TENANTS = {
     'default': {
         'SCHEMA_NAME': 'public',
-        'DOMAINS': ['localhost'],
+        'TENANT_MODEL': 'tenants.Tenant',
+        'URLCONF': 'app.urls',
     },
     'public': {
         'SCHEMA_NAME': 'public',
-        'DOMAINS': ['localhost'],
     },
 }
 
