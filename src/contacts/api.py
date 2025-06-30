@@ -1,12 +1,14 @@
-from ninja import NinjaAPI, Schema, Path, Query
-from ninja.pagination import paginate
+from datetime import datetime
 from typing import List, Optional
 from uuid import UUID
-from datetime import datetime
+
+from django.http import Http404
+from ninja import NinjaAPI, Schema
+from ninja.pagination import paginate
 
 from contacts.models import Contact
 
-api = NinjaAPI(title="Contacts API")
+api = NinjaAPI(title="Contacts API", urls_namespace='api')
 
 
 class ContactIn(Schema):
@@ -23,7 +25,7 @@ class ContactOut(Schema):
     date_created: datetime
 
 
-@api.post("/contacts", response={201: ContactOut})
+@api.post("/", response={201: ContactOut})
 def create_contact(request, payload: ContactIn):
     contact = Contact.objects.create(
         name=payload.name,
@@ -33,7 +35,7 @@ def create_contact(request, payload: ContactIn):
     return 201, contact
 
 
-@api.get("/contacts", response=List[ContactOut])
+@api.get("/", response=List[ContactOut])
 @paginate
 def list_contacts(request, email: Optional[str] = None):
     queryset = Contact.objects.all()
@@ -42,24 +44,33 @@ def list_contacts(request, email: Optional[str] = None):
     return queryset
 
 
-@api.get("/contacts/{contact_id}", response=ContactOut)
+@api.get("/{contact_id}", response=ContactOut)
 def get_contact(request, contact_id: UUID):
-    contact = Contact.objects.get(id=contact_id)
-    return contact
+    try:
+        contact = Contact.objects.get(id=contact_id)
+        return contact
+    except Contact.DoesNotExist:
+        raise Http404(f"Contact with id {contact_id} does not exist")
 
 
-@api.put("/contacts/{contact_id}", response=ContactOut)
+@api.put("/{contact_id}", response=ContactOut)
 def update_contact(request, contact_id: UUID, payload: ContactIn):
-    contact = Contact.objects.get(id=contact_id)
-    contact.name = payload.name
-    contact.email = payload.email
-    contact.phone = payload.phone
-    contact.save()
-    return contact
+    try:
+        contact = Contact.objects.get(id=contact_id)
+        contact.name = payload.name
+        contact.email = payload.email
+        contact.phone = payload.phone
+        contact.save()
+        return contact
+    except Contact.DoesNotExist:
+        raise Http404(f"Contact with id {contact_id} does not exist")
 
 
-@api.delete("/contacts/{contact_id}", response={204: None})
+@api.delete("/{contact_id}", response={204: None})
 def delete_contact(request, contact_id: UUID):
-    contact = Contact.objects.get(id=contact_id)
-    contact.delete()
-    return 204, None
+    try:
+        contact = Contact.objects.get(id=contact_id)
+        contact.delete()
+        return 204, None
+    except Contact.DoesNotExist:
+        raise Http404(f"Contact with id {contact_id} does not exist")

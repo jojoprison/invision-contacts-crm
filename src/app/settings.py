@@ -3,15 +3,18 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
-env_path = Path(__file__).resolve().parent.parent.parent / '.env'
+env_path = Path(os.path.join(os.path.dirname(os.path.dirname(__file__)), '.env'))
 if env_path.exists():
     load_dotenv(env_path)
+
+# docker, local
+ENV_TYPE = os.environ.get('ENV_TYPE', 'docker')
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-gang-bang7')
-DEBUG = os.environ.get('DEBUG', 'True') == 'True'
+DEBUG = os.environ.get('DEBUG', '1') == '1'
 
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '*').split(',')
 
@@ -31,12 +34,12 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'tenants.middleware.TenantMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'tenants.middleware.TenantMiddleware',
 ]
 
 ROOT_URLCONF = 'app.urls'
@@ -59,30 +62,68 @@ TEMPLATES = [
 WSGI_APPLICATION = 'app.wsgi.application'
 
 
-DATABASE_URL = os.environ.get('DATABASE_URL', 'postgres://postgres:postgres@localhost:5432/contacts_crm')
+DATABASE_URL = os.environ.get(
+    'DATABASE_URL',
+    'postgres://postgres:postgres@localhost:5432/contacts_crm'
+)
+db_parts = DATABASE_URL.split('/')
+db_name = db_parts[-1]
+
+host_string = DATABASE_URL.split('@')[-1].split('/')[0]
+if ':' in host_string:
+    host, port = host_string.split(':')
+else:
+    host, port = host_string, '5432'
+
+if ENV_TYPE == 'local':
+    host = 'localhost'
+
+auth_part = DATABASE_URL.split('/')[2].split('@')[0]
+if ':' in auth_part:
+    user, password = auth_part.split(':')
+else:
+    user, password = 'postgres', 'postgres'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django_pgschemas.postgresql_backend',
-        'NAME': DATABASE_URL.split('/')[-1],
-        'USER': DATABASE_URL.split('/')[2].split(':')[0],
-        'PASSWORD': DATABASE_URL.split(':')[2].split('@')[0],
-        'HOST': DATABASE_URL.split('@')[1].split(':')[0],
-        'PORT': DATABASE_URL.split(':')[3].split('/')[0],
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': db_name,
+        'USER': user,
+        'PASSWORD': password,
+        'HOST': host,
+        'PORT': port,
     }
 }
+
+DATABASE_ROUTERS = ['django_pgschemas.routers.TenantAppsRouter']
 
 TENANT_MODEL = 'tenants.Tenant'
 DOMAIN_MODEL = 'tenants.Domain'
 TENANT_SCHEMA_PREFIX = os.environ.get('TENANT_SCHEMA_PREFIX', 'contact_')
+
 TENANTS = {
-    'default': {
-        'SCHEMA_NAME': 'public',
-        'TENANT_MODEL': 'tenants.Tenant',
-        'URLCONF': 'app.urls',
-    },
+    # (shared)
     'public': {
         'SCHEMA_NAME': 'public',
+        'APPS': [
+            'django.contrib.admin',
+            'django.contrib.auth',
+            'django.contrib.contenttypes',
+            'django.contrib.sessions',
+            'django.contrib.messages',
+            'django.contrib.staticfiles',
+            'django_pgschemas',
+            'tenants',
+        ],
+    },
+    'default': {
+        'TENANT_MODEL': 'tenants.Tenant',
+        'DOMAIN_MODEL': 'tenants.Domain',
+        'APPS': [
+            'ninja',
+            'contacts',
+        ],
+        'URLCONF': 'app.urls',
     },
 }
 
