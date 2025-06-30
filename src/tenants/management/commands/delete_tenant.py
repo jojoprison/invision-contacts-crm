@@ -1,6 +1,7 @@
 from django.core.management.base import BaseCommand, CommandError
 from django.db import connection
 from tenants.models import Tenant, Domain
+from django.conf import settings
 
 
 class Command(BaseCommand):
@@ -14,6 +15,12 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         schema_name = options['schema_name']
         force = options.get('force', False)
+        
+        # Добавляем префикс если его нет
+        prefix = settings.TENANT_SCHEMA_PREFIX
+        if not schema_name.startswith(prefix):
+            schema_name = f"{prefix}{schema_name}"
+            self.stdout.write(f"Применён префикс: {schema_name}")
         
         # Проверяем существование тенанта
         try:
