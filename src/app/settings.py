@@ -95,7 +95,7 @@ DATABASES = {
     }
 }
 
-DATABASE_ROUTERS = ['django_pgschemas.routing.Router']
+DATABASE_ROUTERS = ['django_pgschemas.routers.TenantAppsRouter']
 
 TENANT_MODEL = 'tenants.Tenant'
 DOMAIN_MODEL = 'tenants.Domain'
