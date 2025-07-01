@@ -136,20 +136,13 @@ curl -X DELETE http://localhost:8000/api/contacts/550e8400-e29b-41d4-a716-446655
   -H "X-SCHEMA: company1"
 ```
 
-# Запустить все контейнеры
-make up
+## Запуск тестов
 
-# Остановить все контейнеры
-make down
+```bash
+# Через Docker Compose
+docker-compose exec web pytest ../src/tests/ --cov=contacts --cov=tenants --cov-report=term-missing
 
-# Пересоздать окружение с нуля
-make reset
-
-# Создать нового тенанта
-make tenant
-
-# Создать суперпользователя
-make createuser
-
-# Запустить обновление после push в dev или main (для GitHub Desktop)
-./update-after-push.sh
+# Локально с Poetry
+cd src
+poetry run pytest ../src/tests/ --cov=contacts --cov=tenants --cov-report=term-missing
+```
