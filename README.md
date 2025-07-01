@@ -27,7 +27,17 @@ git clone https://github.com/jojoprison/invision-contacts-crm.git
 cd invision-contacts-crm
 ```
 
-### Шаг 2.1: Запуск через Docker Compose (рекомендуется)
+### Шаг 2: Настройка переменных окружения
+
+```bash
+# Копирование примера .env файла
+cp .env.example .env
+
+# Отредактируйте .env файл в соответствии с вашими настройками
+# Для Docker установки значения по умолчанию уже должны работать
+```
+
+### Шаг 3.1: Запуск через Docker Compose (рекомендуется)
 
 ```bash
 # Запуск всех сервисов
