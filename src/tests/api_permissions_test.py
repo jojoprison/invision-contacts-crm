@@ -23,9 +23,8 @@ def test_create_contact_validation(tenant1_client):
 def test_create_contact_with_invalid_email(tenant1_client):
 
     invalid_data = {
-        'name': "Test Contact",
-        # incorrect
-        'email': "invalid-email",
+        'name': "Test Contact with Invalid Email",
+        'email': "invalid-email-format",
         'phone': "+79991234567"
     }
     
