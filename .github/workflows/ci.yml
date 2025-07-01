@@ -2,14 +2,9 @@ name: Django CI
 
 on:
   push:
-    branches: [ main, dev ]
-    # Не запускать при push в ветку, если для неё существует активный PR
-    paths-ignore:
-      - '**'
-    # Отменить это условие, если это не изменение связанное с PR
-    if: github.event_name != 'pull_request'
+    branches: [ main ]  # Запускать CI только для push в main
   pull_request:
-    branches: [ main, dev ]
+    branches: [ main, dev ]  # Запускать CI для PR в main и dev
 
 jobs:
   lint:
