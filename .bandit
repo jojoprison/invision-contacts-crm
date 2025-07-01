@@ -1,3 +1,5 @@
-[bandit]
-exclude_dirs = ["src/tests"]
-skips = ["B101"]
+---
+skips:
+- B101
+exclude_dirs:
+- src/tests
