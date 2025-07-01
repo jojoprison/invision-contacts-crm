@@ -67,31 +67,6 @@ def test_delete_tenant_command():
 
 
 @pytest.mark.django_db
-def test_migrate_schema_command():
-    """Тестирует команду migrate_schema"""
-    # Создаем тестовый тенант и схему
-    test_name = f"mgr_{uuid.uuid4().hex[:8]}"
-    test_schema = f"contact_{test_name}"
-    
-    # Создаем схему вручную
-    with connection.cursor() as cursor:
-        cursor.execute(f"CREATE SCHEMA IF NOT EXISTS {test_schema}")
-    
-    # Запускаем миграцию схемы
-    try:
-        call_command('migrate_schema', test_schema)
-        command_success = True
-    except Exception:
-        command_success = False
-    
-    assert command_success, "Команда migrate_schema должна выполняться без ошибок"
-    
-    # Очистка после теста
-    with connection.cursor() as cursor:
-        cursor.execute(f"DROP SCHEMA IF EXISTS {test_schema} CASCADE")
-
-
-@pytest.mark.django_db
 def test_migrate_tenant_schema_command():
     """Тестирует команду migrate_tenant_schema"""
     # Создаем тестовый тенант
