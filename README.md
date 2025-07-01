@@ -134,14 +134,14 @@ curl -X GET "http://localhost:8000/api/contacts/?email=john" \
 ### Получение конкретного контакта
 
 ```bash
-curl -X GET http://localhost:8000/api/contacts/550e8400-e29b-41d4-a716-446655440000/ \
+curl -X GET http://localhost:8000/api/contacts/550e8400-e29b-41d4-a716-446655440000 \
   -H "X-SCHEMA: company1"
 ```
 
 ### Обновление контакта
 
 ```bash
-curl -X PUT http://localhost:8000/api/contacts/550e8400-e29b-41d4-a716-446655440000/ \
+curl -X PUT http://localhost:8000/api/contacts/550e8400-e29b-41d4-a716-446655440000 \
   -H "Content-Type: application/json" \
   -H "X-SCHEMA: company1" \
   -d '{"name":"John Smith","email":"john.smith@example.com","phone":"123-456-7890"}'
@@ -150,7 +150,7 @@ curl -X PUT http://localhost:8000/api/contacts/550e8400-e29b-41d4-a716-446655440
 ### Удаление контакта
 
 ```bash
-curl -X DELETE http://localhost:8000/api/contacts/550e8400-e29b-41d4-a716-446655440000/ \
+curl -X DELETE http://localhost:8000/api/contacts/550e8400-e29b-41d4-a716-446655440000 \
   -H "X-SCHEMA: company1"
 ```
 
