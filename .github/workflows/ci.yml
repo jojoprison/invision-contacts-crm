@@ -39,7 +39,7 @@ jobs:
         run: poetry run flake8 src
 
       - name: Проверка безопасности с Bandit
-        run: poetry run bandit -r src/
+        run: poetry run bandit -r src/ -c .bandit
 
   test:
     name: Тестирование
