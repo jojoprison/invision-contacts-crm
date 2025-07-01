@@ -2,8 +2,8 @@
 
 branch=$(git symbolic-ref --short HEAD)
 
-if [ "$branch" == "dev" ]; then
-  echo "Обновляем контейнеры для ветки dev..."
+if [ "$branch" == "dev" ] || [ "$branch" == "main" ]; then
+  echo "Обновляем контейнеры для ветки $branch..."
 
   docker-compose down
   docker-compose build
@@ -11,5 +11,5 @@ if [ "$branch" == "dev" ]; then
   
   echo "Контейнеры успешно обновлены!"
 else
-  echo "Текущая ветка: $branch (не dev). Обновление не требуется."
+  echo "Текущая ветка: $branch (не dev/main). Обновление не требуется."
 fi

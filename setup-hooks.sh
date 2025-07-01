@@ -6,8 +6,8 @@ cat > .git/hooks/pre-push <<'EOF'
 
 branch=$(git symbolic-ref --short HEAD)
 
-if [ "$branch" == "dev" ]; then
-  echo "Обнаружен пуш в ветку dev. Обновляем контейнеры..."
+if [ "$branch" == "dev" ] || [ "$branch" == "main" ]; then
+  echo "Обнаружен пуш в ветку $branch. Обновляем контейнеры..."
   
   # Остановка и пересборка контейнеров
   docker-compose down
@@ -23,4 +23,4 @@ EOF
 
 chmod +x .git/hooks/pre-push
 
-echo "Pre-push хук установлен! Теперь при пуше в ветку dev контейнеры будут автоматически обновляться."
+echo "Pre-push хук установлен! Теперь при пуше в ветки dev и main контейнеры будут автоматически обновляться."
