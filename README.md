@@ -138,14 +138,29 @@ curl -X DELETE http://localhost:8000/api/contacts/550e8400-e29b-41d4-a716-446655
 
 ## Запуск тестов
 
+### Базовый запуск тестов
+
 ```bash
 # Через Docker Compose
-docker-compose exec web pytest ../src/tests/ --cov=contacts --cov=tenants --cov-report=term-missing
+docker-compose exec web pytest src/tests/
 
 # Локально с Poetry
 cd src
-poetry run pytest ../src/tests/ --cov=contacts --cov=tenants --cov-report=term-missing
+poetry run pytest tests/
 ```
+
+### Запуск с проверкой покрытия кода
+
+```bash
+# Через Docker Compose (текущее покрытие > 90%)
+docker-compose exec web pytest src/tests/ --cov=src --cov-report=term
+
+# Локально с Poetry
+cd src
+poetry run pytest tests/ --cov=contacts --cov=tenants --cov-report=term-missing
+```
+
+> **Подробная информация:** Дополнительная документация по тестированию мультитенантной архитектуры доступна в [документации по тестированию](src/tests/README.md)
 
 ## Автоматизация обновления контейнеров
 
