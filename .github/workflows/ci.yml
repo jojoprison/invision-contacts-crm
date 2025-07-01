@@ -97,6 +97,8 @@ jobs:
           TENANT_SCHEMA_PREFIX: contact_
         run: |
           cd src
+          # Применяем миграции перед запуском тестов
+          poetry run python manage.py migrate
           poetry run pytest ../src/tests/ --cov=contacts --cov=tenants --cov-report=xml --cov-report=term-missing --cov-fail-under=80
           poetry run python manage.py setup_environment --no-input
 
