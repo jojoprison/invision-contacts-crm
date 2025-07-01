@@ -40,15 +40,23 @@ cp .env.example .env
 ### Шаг 3.1: Запуск через Docker Compose (рекомендуется)
 
 ```bash
+# Сборка образов
+docker-compose build
+
 # Запуск всех сервисов
 docker-compose up -d
+```
 
-# 3. Remove any existing venv and create a new one on 3.11
-poetry env remove python  || true
-poetry env use python3.11
+> **Примечание:** Миграции и создание тенанта по умолчанию выполняются 
+> автоматически при запуске контейнеров благодаря настройкам в docker-entrypoint.sh
 
-# 4. Install dependencies (prod + dev)
-poetry lock --no-update
+### Шаг 3.2: Локальная установка с Poetry
+
+```bash
+# Обновление lock-файла
+poetry lock
+
+# Установка зависимостей
 poetry install --with dev
 
 # 5. Настройка автоматизации (опционально)
