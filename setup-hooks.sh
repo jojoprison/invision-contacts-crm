@@ -4,10 +4,8 @@
 cat > .git/hooks/pre-push <<'EOF'
 #!/bin/bash
 
-# Получаем имя текущей ветки
 branch=$(git symbolic-ref --short HEAD)
 
-# Проверяем, что мы в ветке dev
 if [ "$branch" == "dev" ]; then
   echo "Обнаружен пуш в ветку dev. Обновляем контейнеры..."
   
