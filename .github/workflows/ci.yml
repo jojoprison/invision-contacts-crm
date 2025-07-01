@@ -2,9 +2,9 @@ name: Django CI
 
 on:
   push:
-    branches: [ main, dev ]
+    branches: [ main ]  # Запускать CI только для push в main
   pull_request:
-    branches: [ main, dev ]
+    branches: [ main, dev ]  # Запускать CI для PR в main и dev
 
 jobs:
   lint:
