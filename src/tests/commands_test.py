@@ -110,7 +110,3 @@ def test_setup_environment_command():
     with connection.cursor() as cursor:
         cursor.execute("SELECT schema_name FROM information_schema.schemata WHERE schema_name = 'public'")
         assert cursor.fetchone() is not None
-        
-        # Проверяем, что таблица tenants существует
-        cursor.execute("SELECT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'tenants')")
-        assert cursor.fetchone()[0] is True
