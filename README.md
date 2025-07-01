@@ -48,6 +48,12 @@ docker-compose exec web pytest src/tests/
 # Запуск тестов с подробным выводом
 docker-compose exec web pytest src/tests/ -v
 
+# Запуск с проверкой покрытия кода тестами (текущее покрытие > 90%)
+docker-compose exec web pytest src/tests/ --cov=src --cov-report=term
+
+# Генерация HTML-отчета о покрытии
+docker-compose exec web pytest src/tests/ --cov=src --cov-report=html
+
 # Подробная документация по тестированию мультитенантной архитектуры:
 # [Документация по тестированию](src/tests/README.md)
 
