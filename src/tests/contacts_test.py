@@ -53,6 +53,7 @@ def test_update_contact(tenant1_client, create_contact):
         'email': "updated@example.com",
         'phone': "+79991112233"
     }
+
     response = tenant1_client.put(
         f'/api/contacts/{contact_id}',
         json.dumps(update_data),

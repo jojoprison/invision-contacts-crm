@@ -44,6 +44,7 @@ def test_delete_tenant_command():
         cursor.execute(f"CREATE SCHEMA IF NOT EXISTS {schema_name}")
 
     with connection.cursor() as cursor:
+
         cursor.execute(
             "SELECT schema_name FROM information_schema.schemata WHERE schema_name = %s",
             [schema_name]

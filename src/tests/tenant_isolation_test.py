@@ -34,7 +34,6 @@ def test_email_uniqueness_per_tenant(
     get_response1 = tenant2_client.get(f'/api/contacts/{contact1_id}')
     assert get_response1.status_code == 404
 
-
 def test_contact_count_isolation(
     tenant1_client, tenant2_client, create_contact
 ):

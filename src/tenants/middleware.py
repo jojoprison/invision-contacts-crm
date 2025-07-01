@@ -19,6 +19,7 @@ class TenantMiddleware:
         public_paths = [
             '/admin/',
             '/api/contacts/docs',
+            '/api/contacts/openapi.json',
             '/static/',
         ]
 
