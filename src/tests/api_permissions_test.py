@@ -7,7 +7,7 @@ def test_create_contact_validation(tenant1_client):
         'email': "test@example.com",
         'phone': "+79991234567"
     }
-    
+
     response = tenant1_client.post(
         '/api/contacts/',
         json.dumps(invalid_data),
@@ -27,7 +27,7 @@ def test_create_contact_with_invalid_email(tenant1_client):
         'email': "invalid-email-format",
         'phone': "+79991234567"
     }
-    
+
     response = tenant1_client.post(
         '/api/contacts/',
         json.dumps(invalid_data),
@@ -48,13 +48,13 @@ def test_get_nonexistent_contact(tenant1_client):
 def test_update_nonexistent_contact(tenant1_client):
 
     nonexistent_id = "00000000-0000-0000-0000-000000000000"
-    
+
     update_data = {
         'name': "Updated Contact",
         'email': "updated@example.com",
         'phone': "+79991112233"
     }
-    
+
     response = tenant1_client.put(
         f'/api/contacts/{nonexistent_id}',
         json.dumps(update_data),

@@ -16,7 +16,7 @@ class Command(BaseCommand):
         check_only = options.get('check', False)
 
         try:
-            tenant = Tenant.objects.get(schema_name=schema_name)
+            _ = Tenant.objects.get(schema_name=schema_name)
         except Tenant.DoesNotExist:
             self.stdout.write(self.style.ERROR(f'Тенант {schema_name} не найден!'))
             return

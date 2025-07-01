@@ -56,7 +56,7 @@ def setup_tenants(db):
     except Exception as e:
         print(f"Ошибка при настройке схемы: {str(e)}")
         raise
-    
+
     yield tenant1, tenant2
 
     try:

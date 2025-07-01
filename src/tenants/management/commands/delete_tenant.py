@@ -40,6 +40,6 @@ class Command(BaseCommand):
             cursor.execute(f'DROP SCHEMA IF EXISTS {schema_name} CASCADE;')
 
         tenant.delete()
-        
+
         self.stdout.write(self.style.SUCCESS(
             f'Успешно удалён тенант и схема {schema_name}'))
