@@ -146,3 +146,36 @@ docker-compose exec web pytest ../src/tests/ --cov=contacts --cov=tenants --cov-
 cd src
 poetry run pytest ../src/tests/ --cov=contacts --cov=tenants --cov-report=term-missing
 ```
+
+## Автоматизация обновления контейнеров
+
+```bash
+# Для автоматического обновления контейнеров
+chmod +x setup-hooks.sh
+./setup-hooks.sh
+```
+
+Эта команда активирует:
+- pre-push хук: автообновление контейнеров при push в ветки dev или main
+- post-merge хук: автообновление контейнеров при слиянии PR в ветки dev или main
+
+> **ВАЖНО:** После мержа PR через интерфейс GitHub необходимо выполнить `git pull`
+в локальном репозитории, чтобы активировать post-merge хук и автоматически обновить контейнеры
+
+```bash
+git pull
+```
+
+### Ручное обновление контейнеров
+
+```bash
+# Подготовка скрипта ручного обновления
+chmod +x update-after-push.sh
+
+# Запустить обновление после push в dev или main (для GitHub Desktop)
+./update-after-push.sh
+```
+
+Этот скрипт обновляет контейнеры в следующих случаях:
+- если текущая ветка dev или main
+- если обнаружены недавние слияния PR в dev или main
