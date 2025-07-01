@@ -8,7 +8,14 @@ from ninja.pagination import paginate
 
 from contacts.models import Contact
 
-api = NinjaAPI(title="Contacts API", urls_namespace='api')
+api = NinjaAPI(
+    title="Contacts API",
+    version="1.0.0",
+    description="API для управления контактами в мультитенантном CRM",
+    urls_namespace='contacts',
+    docs_url='/docs',
+    openapi_url='/openapi.json'
+)
 
 
 class ContactIn(Schema):
