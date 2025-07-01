@@ -1,4 +1,6 @@
-def test_tenant_data_isolation(tenant1_client, tenant2_client, create_contact):
+def test_tenant_data_isolation(
+    tenant1_client, tenant2_client, create_contact
+):
 
     create_response = create_contact(tenant1_client)
     contact_id = create_response.json()['id']
@@ -10,7 +12,9 @@ def test_tenant_data_isolation(tenant1_client, tenant2_client, create_contact):
     assert get_response2.status_code == 404
 
 
-def test_email_uniqueness_per_tenant(tenant1_client, tenant2_client, create_contact):
+def test_email_uniqueness_per_tenant(
+    tenant1_client, tenant2_client, create_contact
+):
 
     import uuid
 
@@ -30,8 +34,9 @@ def test_email_uniqueness_per_tenant(tenant1_client, tenant2_client, create_cont
     get_response1 = tenant2_client.get(f'/api/contacts/{contact1_id}')
     assert get_response1.status_code == 404
 
-
-def test_contact_count_isolation(tenant1_client, tenant2_client, create_contact):
+def test_contact_count_isolation(
+    tenant1_client, tenant2_client, create_contact
+):
 
     for i in range(3):
         create_contact(

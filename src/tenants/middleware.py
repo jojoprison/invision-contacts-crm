@@ -8,6 +8,7 @@ from tenants.models import Tenant
 
 logger = logging.getLogger(__name__)
 
+
 class TenantMiddleware:
 
     def __init__(self, get_response):
@@ -24,11 +25,11 @@ class TenantMiddleware:
 
         path = request.path_info
         is_public_path = any(path.startswith(public_path) for public_path in public_paths)
-        
+
         if is_public_path:
             self._set_schema('public')
             return self.get_response(request)
-        
+
         schema_name = request.headers.get('X-SCHEMA')
 
         if not schema_name:
@@ -51,7 +52,7 @@ class TenantMiddleware:
 
             # Django может сбросить между запросами
             self._set_schema(schema_name)
-            
+
             return response
 
         except Tenant.DoesNotExist:
@@ -59,7 +60,7 @@ class TenantMiddleware:
         except Exception as e:
             logger.error(f"Error in TenantMiddleware: {str(e)}")
             return HttpResponseBadRequest(f"Error in tenant routing: {str(e)}")
-    
+
     def _set_schema(self, schema_name):
         with connection.cursor() as cursor:
             cursor.execute(f'SET search_path TO "{schema_name}", public')

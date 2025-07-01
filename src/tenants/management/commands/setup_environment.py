@@ -18,5 +18,5 @@ class Command(BaseCommand):
             self.stdout.write(self.style.SUCCESS('Тенант по умолчанию создан успешно.'))
         else:
             self.stdout.write(f'Найдено существующих тенантов: {tenant_count}')
-            
+
         self.stdout.write(self.style.SUCCESS('Настройка окружения успешно завершена.'))

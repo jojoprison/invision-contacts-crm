@@ -16,7 +16,7 @@ class Command(BaseCommand):
         check_only = options.get('check', False)
 
         try:
-            tenant = Tenant.objects.get(schema_name=schema_name)
+            _ = Tenant.objects.get(schema_name=schema_name)
         except Tenant.DoesNotExist:
             self.stdout.write(self.style.ERROR(f'Тенант {schema_name} не найден!'))
             return
@@ -66,13 +66,16 @@ class Command(BaseCommand):
                                    id        serial       NOT NULL PRIMARY KEY,
                                    app_label varchar(100) NOT NULL,
                                    model     varchar(100) NOT NULL,
-                                   CONSTRAINT django_content_type_app_label_model_key UNIQUE (app_label, model)
+                                   CONSTRAINT django_content_type_app_label_model_key
+                                   UNIQUE (app_label, model)
                                )
                                """)
 
                 cursor.execute("""
-                               INSERT INTO django_content_type (app_label, model)
-                               VALUES ('contacts', 'contact')
+                               INSERT INTO django_content_type
+                               (app_label, model)
+                               VALUES
+                               ('contacts', 'contact')
                                ON CONFLICT (app_label, model) DO NOTHING
                                """)
 
@@ -87,8 +90,10 @@ class Command(BaseCommand):
                                """)
 
                 cursor.execute("""
-                               INSERT INTO django_migrations (app, name, applied)
-                               VALUES ('contacts', '0001_initial', now())
+                               INSERT INTO django_migrations
+                               (app, name, applied)
+                               VALUES
+                               ('contacts', '0001_initial', now())
                                ON CONFLICT DO NOTHING
                                """)
 

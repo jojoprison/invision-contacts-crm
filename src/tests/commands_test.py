@@ -18,12 +18,14 @@ def test_create_tenant_command():
         command_success = True
     except Exception:
         command_success = False
-    
+
     assert command_success, "Команда create_tenant должна выполняться без ошибок"
 
     with connection.cursor() as cursor:
-        cursor.execute("SELECT schema_name FROM information_schema.schemata WHERE schema_name = %s", 
-                      [schema_name])
+        cursor.execute(
+            "SELECT schema_name FROM information_schema.schemata WHERE schema_name = %s",
+            [schema_name]
+        )
         assert cursor.fetchone() is not None
 
     with connection.cursor() as cursor:
@@ -35,15 +37,18 @@ def test_delete_tenant_command():
 
     test_name = f"del_{uuid.uuid4().hex[:8]}"
     schema_name = f"contact_{test_name}"
-    
+
     tenant = Tenant.objects.create(name=test_name, schema_name=schema_name)
 
     with connection.cursor() as cursor:
         cursor.execute(f"CREATE SCHEMA IF NOT EXISTS {schema_name}")
 
     with connection.cursor() as cursor:
-        cursor.execute("SELECT schema_name FROM information_schema.schemata WHERE schema_name = %s", 
-                      [schema_name])
+
+        cursor.execute(
+            "SELECT schema_name FROM information_schema.schemata WHERE schema_name = %s",
+            [schema_name]
+        )
         assert cursor.fetchone() is not None
 
     try:
@@ -51,12 +56,14 @@ def test_delete_tenant_command():
         command_success = True
     except Exception:
         command_success = False
-    
+
     assert command_success, "Команда delete_tenant должна выполняться без ошибок"
 
     with connection.cursor() as cursor:
-        cursor.execute("SELECT schema_name FROM information_schema.schemata WHERE schema_name = %s", 
-                      [schema_name])
+        cursor.execute(
+            "SELECT schema_name FROM information_schema.schemata WHERE schema_name = %s",
+            [schema_name]
+        )
         assert cursor.fetchone() is None
 
 
@@ -65,7 +72,7 @@ def test_migrate_tenant_schema_command():
 
     test_name = f"mts_{uuid.uuid4().hex[:8]}"
     schema_name = f"contact_{test_name}"
-    
+
     tenant = Tenant.objects.create(name=test_name, schema_name=schema_name)
 
     with connection.cursor() as cursor:
@@ -76,7 +83,7 @@ def test_migrate_tenant_schema_command():
         command_success = True
     except Exception:
         command_success = False
-    
+
     assert command_success, "Команда migrate_tenant_schema должна выполняться без ошибок"
 
     with connection.cursor() as cursor:
@@ -92,9 +99,11 @@ def test_setup_environment_command():
         command_success = True
     except Exception:
         command_success = False
-    
+
     assert command_success, "Команда setup_environment должна выполняться без ошибок"
-    
+
     with connection.cursor() as cursor:
-        cursor.execute("SELECT schema_name FROM information_schema.schemata WHERE schema_name = 'public'")
+        cursor.execute(
+            "SELECT schema_name FROM information_schema.schemata WHERE schema_name = 'public'"
+        )
         assert cursor.fetchone() is not None
