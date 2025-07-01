@@ -37,7 +37,7 @@ class Command(BaseCommand):
             )
 
             domain_name = custom_domain or f"{schema}.example.com"
-            domain = Domain.objects.create(
+            _ = Domain.objects.create(
                 domain=domain_name,
                 tenant=tenant,
                 is_primary=True
@@ -51,7 +51,7 @@ class Command(BaseCommand):
             try:
                 self.stdout.write(f'Создаем схему {schema_name}...')
                 create_schema(schema_name, check_if_exists=True, sync_schema=sync_schema)
-                
+
                 if sync_schema:
                     self.stdout.write(self.style.SUCCESS(
                         f'Схема {schema_name} создана и миграции применены автоматически'))
@@ -63,13 +63,17 @@ class Command(BaseCommand):
 
                 # TODO в общем автоматические миграции от 'create_schema' (sync_schema) не работают
                 # TODO надеюсь скоро пофиксят. пришлось вот это городить - потом надо убрать
-                self.stdout.write(f"Применяем migrate_tenant_schema для создания таблиц...")
+                self.stdout.write("Применяем migrate_tenant_schema для создания таблиц...")
                 call_command('migrate_tenant_schema', schema_name)
-                self.stdout.write(self.style.SUCCESS(f"Таблицы в схеме {schema_name} созданы успешно"))
+                self.stdout.write(
+                    self.style.SUCCESS(
+                        f"Таблицы в схеме {schema_name} созданы успешно"
+                    )
+                )
 
             except Exception as e:
                 tenant.delete()
                 raise CommandError(f'Ошибка при создании схемы: {str(e)}')
-                
+
         except Exception as e:
             raise CommandError(f'Ошибка при создании тенанта: {str(e)}')

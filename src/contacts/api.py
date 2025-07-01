@@ -3,7 +3,7 @@ from typing import List, Optional
 from uuid import UUID
 
 from django.http import Http404
-from ninja import NinjaAPI, Schema
+from ninja import NinjaAPI, Schema, Field
 from ninja.pagination import paginate
 
 from contacts.models import Contact
@@ -13,7 +13,11 @@ api = NinjaAPI(title="Contacts API", urls_namespace='api')
 
 class ContactIn(Schema):
     name: str
-    email: str
+    email: str = Field(
+        ...,
+        pattern=r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$',
+        description="Валидный email адрес"
+    )
     phone: Optional[str] = None
 
 

@@ -30,7 +30,11 @@ class Command(BaseCommand):
             if not force:
                 raise CommandError(f'Тенант с схемой {schema_name} не найден!')
             else:
-                self.stdout.write(self.style.WARNING(f'Тенант {schema_name} не найден в базе, но --force указан'))
+                self.stdout.write(
+                    self.style.WARNING(
+                        f'Тенант {schema_name} не найден в базе, но --force указан'
+                    )
+                )
                 return
 
         domain_count = Domain.objects.filter(tenant=tenant).delete()[0]
@@ -40,6 +44,6 @@ class Command(BaseCommand):
             cursor.execute(f'DROP SCHEMA IF EXISTS {schema_name} CASCADE;')
 
         tenant.delete()
-        
+
         self.stdout.write(self.style.SUCCESS(
             f'Успешно удалён тенант и схема {schema_name}'))
