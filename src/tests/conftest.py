@@ -12,7 +12,7 @@ pytest_plugins = ['pytest_django']
 pytest_mark_django_db_in = ['src/tests/']
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope="session")
 def django_db_setup():
     pass
 
@@ -57,7 +57,17 @@ def setup_tenants(db):
         print(f"Ошибка при настройке схемы: {str(e)}")
         raise
     
-    return tenant1, tenant2
+    yield tenant1, tenant2
+
+    try:
+        print(f"Очистка тестовых схем {schema1} и {schema2}")
+        with connection.cursor() as cursor:
+            cursor.execute(f"DROP SCHEMA IF EXISTS {schema1} CASCADE;")
+            cursor.execute(f"DROP SCHEMA IF EXISTS {schema2} CASCADE;")
+        Tenant.objects.filter(schema_name__in=[schema1, schema2]).delete()
+        print("Тестовые схемы успешно удалены")
+    except Exception as e:
+        print(f"Ошибка при очистке схем: {str(e)}")
 
 
 @pytest.fixture
@@ -88,13 +98,7 @@ def invalid_schema_client(db):
 
 @pytest.fixture
 def create_contact(db):
-    """
-    Args:
-        client: Django клиент с настроенным заголовком X-SCHEMA
-        name: Имя контакта (по умолчанию "Test Contact")
-        email: Email контакта (по умолчанию "test@example.com")
-        phone: Телефон контакта (по умолчанию "+79991234567")
-    """
+
     def _create_contact(client, name="Test Contact", email="test@example.com", phone="+79991234567"):
         data = {
             'name': name,
