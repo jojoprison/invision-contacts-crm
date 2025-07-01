@@ -65,7 +65,11 @@ class Command(BaseCommand):
                 # TODO надеюсь скоро пофиксят. пришлось вот это городить - потом надо убрать
                 self.stdout.write("Применяем migrate_tenant_schema для создания таблиц...")
                 call_command('migrate_tenant_schema', schema_name)
-                self.stdout.write(self.style.SUCCESS(f"Таблицы в схеме {schema_name} созданы успешно"))
+                self.stdout.write(
+                    self.style.SUCCESS(
+                        f"Таблицы в схеме {schema_name} созданы успешно"
+                    )
+                )
 
             except Exception as e:
                 tenant.delete()

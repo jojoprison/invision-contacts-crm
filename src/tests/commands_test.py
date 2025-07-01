@@ -102,5 +102,7 @@ def test_setup_environment_command():
     assert command_success, "Команда setup_environment должна выполняться без ошибок"
 
     with connection.cursor() as cursor:
-        cursor.execute("SELECT schema_name FROM information_schema.schemata WHERE schema_name = 'public'")
+        cursor.execute(
+            "SELECT schema_name FROM information_schema.schemata WHERE schema_name = 'public'"
+        )
         assert cursor.fetchone() is not None

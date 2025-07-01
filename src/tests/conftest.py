@@ -99,14 +99,16 @@ def invalid_schema_client(db):
 @pytest.fixture
 def create_contact(db):
 
-    def _create_contact(client, name="Test Contact", email="test@example.com", phone="+79991234567"):
+    def _create_contact(
+            client, name="Test Contact", email="test@example.com", phone="+79991234567"
+    ):
         data = {
             'name': name,
             'email': email,
             'phone': phone
         }
         return client.post(
-            '/api/contacts/', 
+            '/api/contacts/',
             json.dumps(data),
             content_type='application/json'
         )
