@@ -88,23 +88,53 @@ cd src
 poetry run python manage.py delete_tenant company1
 ```
 
-# Запуск тестов с подробным выводом
-docker-compose exec web pytest src/tests/ -v
+## Примеры запросов API
 
-# Запуск с проверкой покрытия кода тестами (текущее покрытие > 90%)
-docker-compose exec web pytest src/tests/ --cov=src --cov-report=term
+### Создание контакта
 
-# Генерация HTML-отчета о покрытии
-docker-compose exec web pytest src/tests/ --cov=src --cov-report=html
+```bash
+curl -X POST http://localhost:8000/api/contacts/ \
+  -H "Content-Type: application/json" \
+  -H "X-SCHEMA: company1" \
+  -d '{"name":"John Doe","email":"john@example.com","phone":"123-456-7890"}'
+```
 
-# Подробная документация по тестированию мультитенантной архитектуры:
-# [Документация по тестированию](src/tests/README.md)
+### Получение списка контактов
 
-⸻
+```bash
+curl -X GET http://localhost:8000/api/contacts/ \
+  -H "X-SCHEMA: company1"
+```
 
-🐳 Docker Development
+### Фильтрация контактов по email
 
-# Используйте Makefile для основных операций
+```bash
+curl -X GET "http://localhost:8000/api/contacts/?email=john" \
+  -H "X-SCHEMA: company1"
+```
+
+### Получение конкретного контакта
+
+```bash
+curl -X GET http://localhost:8000/api/contacts/550e8400-e29b-41d4-a716-446655440000/ \
+  -H "X-SCHEMA: company1"
+```
+
+### Обновление контакта
+
+```bash
+curl -X PUT http://localhost:8000/api/contacts/550e8400-e29b-41d4-a716-446655440000/ \
+  -H "Content-Type: application/json" \
+  -H "X-SCHEMA: company1" \
+  -d '{"name":"John Smith","email":"john.smith@example.com","phone":"123-456-7890"}'
+```
+
+### Удаление контакта
+
+```bash
+curl -X DELETE http://localhost:8000/api/contacts/550e8400-e29b-41d4-a716-446655440000/ \
+  -H "X-SCHEMA: company1"
+```
 
 # Запустить все контейнеры
 make up
