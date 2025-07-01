@@ -1,0 +1,17 @@
+[run]
+omit =
+    src/app/asgi.py
+    src/app/wsgi.py
+    src/manage.py
+    src/*/migrations/*
+    src/*/tests.py
+
+[report]
+exclude_lines =
+    pragma: no cover
+    def __str__
+    def __repr__
+    raise NotImplementedError
+    if __name__ == .__main__.:
+    pass
+    raise ImportError
