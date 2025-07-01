@@ -31,7 +31,7 @@ poetry install --with dev
 
 # 5. Настройка автоматизации (опционально)
 
-# Для автоматического обновления контейнеров при push в ветку dev
+# Для автоматического обновления контейнеров при push в ветки dev или main
 chmod +x setup-hooks.sh
 ./setup-hooks.sh
 
@@ -59,5 +59,5 @@ make tenant
 # Создать суперпользователя
 make createuser
 
-# Запустить обновление после push в dev (для GitHub Desktop)
+# Запустить обновление после push в dev или main (для GitHub Desktop)
 ./update-after-push.sh
