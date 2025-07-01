@@ -1,25 +1,37 @@
-# invision-contacts-crm
+# Contacts CRM - Schema-based Multi-tenancy Service
 
-Contacts service for SaaS-CRM with schema-based multi-tenancy.
+CRM-сервис с контактами, использующий схема-ориентированную мультиарендность для изоляции данных организаций.
 
-⸻
+## Затраченное время
 
-🚀 Prerequisites
-•	Python 3.11 installed (python3.11 in PATH)
-•	Poetry (>= 2.1)
-•	PostgreSQL 14+ (local or Docker)
-•	Docker & Docker Compose (optional, for full-stack)
+- Общее время выполнения: 13.6 часов на момент 14:30
 
-⸻
+## Системные требования
 
-📦 Installation & Setup
+### Вариант 1: Запуск через Docker (рекомендуется)
+- Docker
+- Docker Compose
 
-# 1. Clone the repository
+### Вариант 2: Локальный запуск
+- Python 3.11+
+- Poetry 2.1.3+ (для управления зависимостями)
+- PostgreSQL 14+
+- Redis 7+ (для Celery)
+
+## Установка и настройка
+
+### Шаг 1: Клонирование репозитория
+
+```bash
 git clone https://github.com/jojoprison/invision-contacts-crm.git
 cd invision-contacts-crm
+```
 
-# 2. Ensure Python 3.11 is available
-python3.11 --version   # should output 3.11.x
+### Шаг 2.1: Запуск через Docker Compose (рекомендуется)
+
+```bash
+# Запуск всех сервисов
+docker-compose up -d
 
 # 3. Remove any existing venv and create a new one on 3.11
 poetry env remove python  || true
