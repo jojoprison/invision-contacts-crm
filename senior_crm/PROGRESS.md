@@ -81,11 +81,11 @@ uv run black src/                                      # Форматирова�
 - [x] Error handler (AppException)
 - [x] main.py (FastAPI app)
 
-### Шаг 5: Безопасность и Роли ✅ (integrated)
-- [ ] JWT access/refresh tokens
-- [ ] Role-based access control (RBAC)
-- [ ] X-Organization-Id header validation
-- [ ] Permission checks (owner/admin/manager/member)
+### Шаг 5: Безопасность и Роли ✅ (integrated in services)
+- [x] JWT access/refresh tokens
+- [x] Role-based access control (RBAC)
+- [x] X-Organization-Id header validation
+- [x] Permission checks (owner/admin/manager/member)
 
 ### Шаг 6: Тесты ⏳
 - [ ] Unit-тесты сервисов
@@ -102,6 +102,6 @@ uv run black src/                                      # Форматирова�
 
 ## Текущий статус
 
-**Активный шаг:** 2 — Репозитории
+**Активный шаг:** 6 — Тесты
 
-**Последнее действие:** Применена Initial migration, все таблицы созданы.
+**Последнее действие:** API полностью реализован, сервер запускается на http://localhost:8001. Swagger UI доступен на /docs.
