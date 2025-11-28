@@ -1,19 +1,35 @@
-.PHONY: install db db-stop db-clean migrate migrate-new run test lint format help
+.PHONY: install db db-stop db-clean migrate migrate-new run test test-cov lint format typecheck docker-build help
 
 # Default target
 help:
 	@echo "Доступные команды:"
-	@echo "  make install      - Установить зависимости"
-	@echo "  make db           - Запустить PostgreSQL"
-	@echo "  make db-stop      - Остановить PostgreSQL"
-	@echo "  make db-clean     - Удалить PostgreSQL + данные"
-	@echo "  make migrate      - Применить миграции"
-	@echo "  make migrate-new  - Создать новую миграцию (MSG=описание)"
-	@echo "  make run          - Запустить сервер (порт 8001)"
-	@echo "  make test         - Запустить тесты"
-	@echo "  make test-db      - Создать тестовую БД"
-	@echo "  make lint         - Проверить код (ruff)"
-	@echo "  make format       - Форматировать код (black)"
+	@echo ""
+	@echo "  Установка:"
+	@echo "    make install      - Установить зависимости"
+	@echo ""
+	@echo "  База данных:"
+	@echo "    make db           - Запустить PostgreSQL"
+	@echo "    make db-stop      - Остановить PostgreSQL"
+	@echo "    make db-clean     - Удалить PostgreSQL + данные"
+	@echo ""
+	@echo "  Миграции:"
+	@echo "    make migrate      - Применить миграции"
+	@echo "    make migrate-new  - Создать миграцию (MSG=описание)"
+	@echo ""
+	@echo "  Разработка:"
+	@echo "    make run          - Запустить сервер (порт 8001)"
+	@echo ""
+	@echo "  Тесты:"
+	@echo "    make test         - Запустить тесты"
+	@echo "    make test-cov     - Тесты с coverage"
+	@echo ""
+	@echo "  Качество кода:"
+	@echo "    make lint         - Проверить код (ruff)"
+	@echo "    make format       - Форматировать код (black + isort)"
+	@echo "    make typecheck    - Проверить типы (mypy)"
+	@echo ""
+	@echo "  Docker:"
+	@echo "    make docker-build - Собрать Docker образ"
 
 # Зависимости
 install:
@@ -47,6 +63,10 @@ test-db:
 test: test-db
 	uv run pytest -v
 
+# Тесты с coverage
+test-cov: test-db
+	uv run pytest --cov=src --cov-report=html --cov-report=term -v
+
 # Линтеры
 lint:
 	uv run ruff check src/
@@ -54,3 +74,11 @@ lint:
 format:
 	uv run black src/
 	uv run isort src/
+
+# Type checking
+typecheck:
+	uv run mypy src/
+
+# Docker
+docker-build:
+	docker build -t senior-crm:latest .

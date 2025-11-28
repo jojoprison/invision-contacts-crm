@@ -25,16 +25,55 @@ build-backend = "hatchling.build"
 dev-dependencies = [
     "pytest>=8.0.0",
     "pytest-asyncio>=0.23.4",
+    "pytest-cov>=4.1.0",
     "httpx>=0.26.0",
     "ruff>=0.2.1",
     "black>=24.1.1",
     "isort>=5.13.2",
+    "mypy>=1.8.0",
 ]
 
 [tool.ruff]
 line-length = 120
 target-version = "py311"
+exclude = [
+    ".git",
+    "__pycache__",
+    "alembic/versions",
+    ".venv",
+]
+
+[tool.ruff.lint]
+select = [
+    "E",      # pycodestyle errors
+    "W",      # pycodestyle warnings
+    "F",      # Pyflakes
+    "I",      # isort
+    "B",      # flake8-bugbear
+    "C4",     # flake8-comprehensions
+    "UP",     # pyupgrade
+]
+ignore = [
+    "E501",   # line too long (handled by formatter)
+    "B008",   # do not perform function calls in argument defaults
+]
 
 [tool.isort]
 profile = "black"
 line_length = 120
+
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_ignores = true
+disallow_untyped_defs = false
+check_untyped_defs = true
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+
+[tool.coverage.run]
+source = ["src"]
+omit = ["src/__init__.py", "alembic/*"]
