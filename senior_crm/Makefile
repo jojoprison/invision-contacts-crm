@@ -1,4 +1,4 @@
-.PHONY: install db db-stop db-clean migrate migrate-new run test test-cov lint format typecheck docker-build help
+.PHONY: install db db-stop db-clean migrate migrate-new seed wait-db run test test-cov lint format typecheck docker-build help
 
 # Default target
 help:
@@ -9,8 +9,10 @@ help:
 	@echo ""
 	@echo "  База данных:"
 	@echo "    make db           - Запустить PostgreSQL"
+	@echo "    make wait-db      - Ждать готовности БД"
 	@echo "    make db-stop      - Остановить PostgreSQL"
 	@echo "    make db-clean     - Удалить PostgreSQL + данные"
+	@echo "    make seed         - Наполнить БД тестовыми данными"
 	@echo ""
 	@echo "  Миграции:"
 	@echo "    make migrate      - Применить миграции"
@@ -39,11 +41,17 @@ install:
 db:
 	docker-compose up -d
 
+wait-db:
+	uv run python src/scripts/wait_for_db.py
+
 db-stop:
 	docker-compose stop
 
 db-clean:
 	docker-compose down -v
+
+seed:
+	uv run python src/scripts/seed.py
 
 # Миграции
 migrate:

@@ -51,29 +51,46 @@ src/
 
 ## Getting Started
 
-### 1. Install dependencies
+### 1. Environment Setup
 ```bash
 cd senior_crm
 uv sync
 ```
 
-### 2. Start PostgreSQL
+### 2. Run Database
 ```bash
-docker-compose up -d
+make db
+make wait-db  # Wait for DB to be ready
 ```
 
-### 3. Run migrations
+### 3. Run Migrations & Seed Data
 ```bash
-uv run alembic upgrade head
+make migrate
+make seed     # Populate with demo data (admin@example.com / admin)
 ```
 
-### 4. Start the server
+### 4. Run Application
 ```bash
-uv run uvicorn src.main:app --reload --port 8001
+make run
 ```
 
 ### 5. Open Swagger UI
 http://localhost:8001/docs
+
+## Useful Commands (Makefile)
+
+| Command | Description |
+|---------|-------------|
+| `make install` | Install dependencies via uv |
+| `make db` | Start PostgreSQL (docker-compose) |
+| `make wait-db` | Wait for DB connection |
+| `make seed` | Seed DB with demo user and data |
+| `make migrate` | Run Alembic migrations |
+| `make test` | Run tests |
+| `make test-cov` | Run tests with coverage report |
+| `make lint` | Check code style (ruff) |
+| `make format` | Auto-format code |
+| `make docker-build` | Build production Docker image |
 
 ## Running Tests
 
