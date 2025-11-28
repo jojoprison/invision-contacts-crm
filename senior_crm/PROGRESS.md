@@ -68,18 +68,20 @@ uv run black src/                                      # Форматирова�
 - [x] core/security.py (JWT, password hashing)
 - [x] core/exceptions.py (custom exceptions)
 
-### Шаг 4: API Layer 🔄
-- [ ] Pydantic Schemas (Request/Response)
-- [ ] Dependencies (get_current_user, get_organization_context)
-- [ ] Auth endpoints (register, login, refresh)
-- [ ] Organizations endpoints
-- [ ] Contacts endpoints (CRUD + search + pagination)
-- [ ] Deals endpoints (CRUD + filters + sorting)
-- [ ] Tasks endpoints
-- [ ] Activities endpoints
-- [ ] Analytics endpoints
+### Шаг 4: API Layer ✅
+- [x] Pydantic Schemas (Request/Response)
+- [x] Dependencies (get_current_user, get_organization_context)
+- [x] Auth endpoints (register, login, refresh)
+- [x] Organizations endpoints (/me)
+- [x] Contacts endpoints (CRUD + search + pagination)
+- [x] Deals endpoints (CRUD + filters + sorting)
+- [x] Tasks endpoints
+- [x] Activities endpoints (timeline + comments)
+- [x] Analytics endpoints (summary, funnel)
+- [x] Error handler (AppException)
+- [x] main.py (FastAPI app)
 
-### Шаг 5: Безопасность и Роли ⏳
+### Шаг 5: Безопасность и Роли ✅ (integrated)
 - [ ] JWT access/refresh tokens
 - [ ] Role-based access control (RBAC)
 - [ ] X-Organization-Id header validation
