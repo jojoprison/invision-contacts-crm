@@ -57,16 +57,18 @@ uv run black src/                                      # Форматирова�
 - [x] TaskRepository
 - [x] ActivityRepository
 
-### Шаг 3: Сервисы (Business Logic) 🔄
-- [ ] AuthService (регистрация, логин, JWT)
-- [ ] OrganizationService
-- [ ] ContactService
-- [ ] DealService (валидации: amount>0 для won, запрет отката stage)
-- [ ] TaskService (валидация due_date не в прошлом)
-- [ ] ActivityService (автосоздание при смене статуса)
-- [ ] AnalyticsService (summary, funnel)
+### Шаг 3: Сервисы (Business Logic) ✅
+- [x] AuthService (регистрация, логин, JWT)
+- [x] OrganizationService (RBAC, membership)
+- [x] ContactService (CRUD + ownership checks)
+- [x] DealService (валидации: amount>0 для won, запрет отката stage)
+- [x] TaskService (валидация due_date не в прошлом)
+- [x] ActivityService (автосоздание при смене статуса)
+- [x] AnalyticsService (summary, funnel + in-memory cache)
+- [x] core/security.py (JWT, password hashing)
+- [x] core/exceptions.py (custom exceptions)
 
-### Шаг 4: API Layer ⏳
+### Шаг 4: API Layer 🔄
 - [ ] Pydantic Schemas (Request/Response)
 - [ ] Dependencies (get_current_user, get_organization_context)
 - [ ] Auth endpoints (register, login, refresh)
