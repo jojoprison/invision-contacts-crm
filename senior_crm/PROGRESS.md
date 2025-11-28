@@ -87,16 +87,17 @@ uv run black src/                                      # Форматирова�
 - [x] X-Organization-Id header validation
 - [x] Permission checks (owner/admin/manager/member)
 
-### Шаг 6: Тесты ⏳
-- [ ] Unit-тесты сервисов
-- [ ] Integration-тесты API (полный сценарий)
-- [ ] Fixtures для тестовой БД
+### Шаг 6: Тесты ✅
+- [x] conftest.py (fixtures, test DB)
+- [x] test_auth.py (register, login)
+- [x] test_deals.py (create, status validation, activity creation)
+- [x] test_tasks.py (create, due_date validation)
 
-### Шаг 7: Финализация ⏳
-- [ ] Кэширование (in-memory для аналитики)
-- [ ] Error handling (унифицированный формат)
-- [ ] README.md (архитектура, запуск)
-- [ ] Финальная проверка
+### Шаг 7: Финализация ✅
+- [x] Кэширование (in-memory для аналитики) — в AnalyticsService
+- [x] Error handling (унифицированный формат) — AppException handler
+- [x] README.md (архитектура, API docs, бизнес-правила)
+- [x] Финальная проверка — сервер запускается
 
 ---
 
